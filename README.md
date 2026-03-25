@@ -13,64 +13,64 @@ SHEEPOD_CHANNEL_KEY_ZIP=xxxxx
 SHEEPOD_CHANNEL_KEY_WINDOWS=xxxxx  
 SHEEPOD_CHANNEL_KEY_IOS=xxxxx  
   
-+-----------------+---------------------------------+------------------------+----------+
-|                                    zealot Options                                     |
-+-----------------+---------------------------------+------------------------+----------+
-| Key             | Description                     | Env Var                | Default  |
-+-----------------+---------------------------------+------------------------+----------+
-| endpoint        | The endpoint of sheepod         | ZEALOT_ENDPOINT        |          |
-| token           | The token of user               | ZEALOT_TOKEN           |          |
-| channel_key     | The key of app's channel        | ZEALOT_CHANNEL_KEY     |          |
-| file            | The path of app file. Optional  | ZEALOT_FILE            |          |
-|                 | if you use the `gym`, `ipa`,    |                        |          |
-|                 | `xcodebuild` or `gradle`        |                        |          |
-|                 | action.                         |                        |          |
-| name            | The name of app to display on   | ZEALOT_NAME            |          |
-|                 | zealot                          |                        |          |
-| changelog       | The changelog of app            | ZEALOT_CHANGELOG       |          |
-| slug            | The slug of app                 | ZEALOT_SLUG            |          |
-| release_type    | The release type of app         | ZEALOT_RELEASE_TYPE    |          |
-| branch          | The name of git branch          | ZEALOT_BRANCH          |          |
-| git_commit      | The hash of git commit          | ZEALOT_GIT_COMMIT      |          |
-| custom_fields   | The key-value hash of custom    | ZEALOT_CUSTOM_FIELDS   |          |
-|                 | fields                          |                        |          |
-| password        | The password of app to download | ZEALOT_PASSWORD        |          |
-| source          | The name of upload source       | ZEALOT_SOURCE          | fastlane |
-| ci_url          | The name of upload source       | ZEALOT_CI_CURL         |          |
-| timeout         | Request timeout in seconds      | ZEALOT_TIMEOUT         |          |
-| hide_user_token | replase user token to *** to    | ZEALOT_HIDE_USER_TOKEN | true     |
-|                 | keep secret                     |                        |          |
-| verify_ssl      | Should verify SSL of sheepod    | ZEALOT_VERIFY_SSL      | true     |
-|                 | service                         |                        |          |
-| fail_on_error   | Should an error uploading app   | ZEALOT_FAIL_ON_ERROR   | false    |
-|                 | cause a failure                 |                        |          |
-+-----------------+---------------------------------+------------------------+----------+
-
-+-----------------+---------------------------------+------------------------+---------+
-|                             zealot_version_check Options                             |
-+-----------------+---------------------------------+------------------------+---------+
-| Key             | Description                     | Env Var                | Default |
-+-----------------+---------------------------------+------------------------+---------+
-| endpoint        | The endpoint of sheepod         | ZEALOT_ENDPOINT        |         |
-| token           | The token of user               | ZEALOT_TOKEN           |         |
-| channel_key     | The key of app's channel        | ZEALOT_CHANNEL_KEY     |         |
-| bundle_id       | The bundle id(package name) of  | ZEALOT_BUNDLE_ID       |         |
-|                 | app                             |                        |         |
-| release_version | The release version of app      | ZEALOT_RELEASE_VERSION |         |
-| build_version   | The build version of app        | ZEALOT_BUILD_VERSION   |         |
-| git_commit      | The latest git commit of app    | ZEALOT_GIT_COMMIT      |         |
-| verify_ssl      | Should verify SSL of sheepod    | ZEALOT_VERIFY_SSL      | true    |
-|                 | service                         |                        |         |
-| fail_on_error   | Should an error http request    | ZEALOT_FAIL_ON_ERROR   | false   |
-|                 | cause a failure? (true/false)   |                        |         |
-+-----------------+---------------------------------+------------------------+---------+
-    
-GitHub Workflow Multiplatform example   
++-----------------+---------------------------------+------------------------+----------+  
+|                                    zealot Options                                     |  
++-----------------+---------------------------------+------------------------+----------+  
+| Key             | Description                     | Env Var                | Default  |  
++-----------------+---------------------------------+------------------------+----------+  
+| endpoint        | The endpoint of sheepod         | ZEALOT_ENDPOINT        |          |  
+| token           | The token of user               | ZEALOT_TOKEN           |          |  
+| channel_key     | The key of app's channel        | ZEALOT_CHANNEL_KEY     |          |  
+| file            | The path of app file. Optional  | ZEALOT_FILE            |          |  
+|                 | if you use the `gym`, `ipa`,    |                        |          |  
+|                 | `xcodebuild` or `gradle`        |                        |          |  
+|                 | action.                         |                        |          |  
+| name            | The name of app to display on   | ZEALOT_NAME            |          |  
+|                 | zealot                          |                        |          |  
+| changelog       | The changelog of app            | ZEALOT_CHANGELOG       |          |  
+| slug            | The slug of app                 | ZEALOT_SLUG            |          |  
+| release_type    | The release type of app         | ZEALOT_RELEASE_TYPE    |          |  
+| branch          | The name of git branch          | ZEALOT_BRANCH          |          |  
+| git_commit      | The hash of git commit          | ZEALOT_GIT_COMMIT      |          |  
+| custom_fields   | The key-value hash of custom    | ZEALOT_CUSTOM_FIELDS   |          |  
+|                 | fields                          |                        |          |  
+| password        | The password of app to download | ZEALOT_PASSWORD        |          |  
+| source          | The name of upload source       | ZEALOT_SOURCE          | fastlane |  
+| ci_url          | The name of upload source       | ZEALOT_CI_CURL         |          |  
+| timeout         | Request timeout in seconds      | ZEALOT_TIMEOUT         |          |  
+| hide_user_token | replase user token to *** to    | ZEALOT_HIDE_USER_TOKEN | true     |  
+|                 | keep secret                     |                        |          |  
+| verify_ssl      | Should verify SSL of sheepod    | ZEALOT_VERIFY_SSL      | true     |  
+|                 | service                         |                        |          |  
+| fail_on_error   | Should an error uploading app   | ZEALOT_FAIL_ON_ERROR   | false    |  
+|                 | cause a failure                 |                        |          |  
++-----------------+---------------------------------+------------------------+----------+  
+  
++-----------------+---------------------------------+------------------------+---------+  
+|                             zealot_version_check Options                             |  
++-----------------+---------------------------------+------------------------+---------+  
+| Key             | Description                     | Env Var                | Default |  
++-----------------+---------------------------------+------------------------+---------+  
+| endpoint        | The endpoint of sheepod         | ZEALOT_ENDPOINT        |         |  
+| token           | The token of user               | ZEALOT_TOKEN           |         |  
+| channel_key     | The key of app's channel        | ZEALOT_CHANNEL_KEY     |         |  
+| bundle_id       | The bundle id(package name) of  | ZEALOT_BUNDLE_ID       |         |  
+|                 | app                             |                        |         |  
+| release_version | The release version of app      | ZEALOT_RELEASE_VERSION |         |  
+| build_version   | The build version of app        | ZEALOT_BUILD_VERSION   |         |  
+| git_commit      | The latest git commit of app    | ZEALOT_GIT_COMMIT      |         |  
+| verify_ssl      | Should verify SSL of sheepod    | ZEALOT_VERIFY_SSL      | true    |  
+|                 | service                         |                        |         |  
+| fail_on_error   | Should an error http request    | ZEALOT_FAIL_ON_ERROR   | false   |  
+|                 | cause a failure? (true/false)   |                        |         |  
++-----------------+---------------------------------+------------------------+---------+  
+     
+GitHub Workflow Multiplatform example    
   
   
 ```
-name: Build Flutter Multiplatform and Upload to Sheepod
-
+name: Build Flutter Multiplatform and Upload to Sheepod  
+  
 on:
   workflow_dispatch:
 
