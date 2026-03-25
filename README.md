@@ -12,7 +12,7 @@ SHEEPOD_CHANNEL_KEY_LINUX=xxxxx
 SHEEPOD_CHANNEL_KEY_ZIP=xxxxx  
 SHEEPOD_CHANNEL_KEY_WINDOWS=xxxxx  
 SHEEPOD_CHANNEL_KEY_IOS=xxxxx  
-  
+```  
 +-----------------+---------------------------------+------------------------+----------+  
 |                                    zealot Options                                     |  
 +-----------------+---------------------------------+------------------------+----------+  
@@ -64,7 +64,8 @@ SHEEPOD_CHANNEL_KEY_IOS=xxxxx
 | fail_on_error   | Should an error http request    | ZEALOT_FAIL_ON_ERROR   | false   |  
 |                 | cause a failure? (true/false)   |                        |         |  
 +-----------------+---------------------------------+------------------------+---------+  
-     
+```
+       
 GitHub Workflow Multiplatform example    
   
   
