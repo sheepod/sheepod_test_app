@@ -1,18 +1,18 @@
 # sheepod_test_app
-sheepod_test_app is a CI-CD multi-platform example. 
-
-Create a user (service account) inside yourcompany.sheepod.io and generate a TOKEN.
-
-Simple CI-CD (No reusable)
-Create the secrets in your GitHub repo or org according to your company needs:
-SHEEPOD_ENDPOINT=https://yourcompany.sheepod.io
-SHEEPOD_TOKEN=xxxxx
-SHEEPOD_CHANNEL_KEY_ANDROID=xxxxx
-SHEEPOD_CHANNEL_KEY_LINUX=xxxxx
-SHEEPOD_CHANNEL_KEY_ZIP=xxxxx
-SHEEPOD_CHANNEL_KEY_WINDOWS=xxxxx
-SHEEPOD_CHANNEL_KEY_IOS=xxxxx
-
+sheepod_test_app is a CI-CD multi-platform example.  
+  
+Create a user (service account) inside yourcompany.sheepod.io and generate a TOKEN.   
+  
+Simple CI-CD (No reusable)  
+Create the secrets in your GitHub repo or org according to your company needs:  
+SHEEPOD_ENDPOINT=https://yourcompany.sheepod.io  
+SHEEPOD_TOKEN=xxxxx  
+SHEEPOD_CHANNEL_KEY_ANDROID=xxxxx  
+SHEEPOD_CHANNEL_KEY_LINUX=xxxxx  
+SHEEPOD_CHANNEL_KEY_ZIP=xxxxx  
+SHEEPOD_CHANNEL_KEY_WINDOWS=xxxxx  
+SHEEPOD_CHANNEL_KEY_IOS=xxxxx  
+  
 +-----------------+---------------------------------+------------------------+----------+
 |                                    zealot Options                                     |
 +-----------------+---------------------------------+------------------------+----------+
@@ -64,10 +64,10 @@ SHEEPOD_CHANNEL_KEY_IOS=xxxxx
 | fail_on_error   | Should an error http request    | ZEALOT_FAIL_ON_ERROR   | false   |
 |                 | cause a failure? (true/false)   |                        |         |
 +-----------------+---------------------------------+------------------------+---------+
+    
+GitHub Workflow Multiplatform example   
   
-GitHub Workflow Multiplatform example  
-
-
+  
 ```
 name: Build Flutter Multiplatform and Upload to Sheepod
 
