@@ -1,0 +1,185 @@
+name: Build Flutter Multiplatform and Upload to Sheepod
+
+on:
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: "3.24.0"
+  APP_NAME: "sheepod_test_app" 
+  
+  SHEEPOD_ENDPOINT: ${{ secrets.SHEEPOD_ENDPOINT }}
+  SHEEPOD_TOKEN: ${{ secrets.SHEEPOD_TOKEN }}
+  SHEEPOD_CHANNEL_KEY_ANDROID: ${{ secrets.SHEEPOD_CHANNEL_KEY_ANDROID }}
+  SHEEPOD_CHANNEL_KEY_LINUX: ${{ secrets.SHEEPOD_CHANNEL_KEY_LINUX }}
+  SHEEPOD_CHANNEL_KEY_ZIP: ${{ secrets.SHEEPOD_CHANNEL_KEY_ZIP }}
+  SHEEPOD_CHANNEL_KEY_WINDOWS: ${{ secrets.SHEEPOD_CHANNEL_KEY_WINDOWS }}
+  SHEEPOD_CHANNEL_KEY_IOS: ${{ secrets.SHEEPOD_CHANNEL_KEY_IOS }}
+
+jobs:
+  # ==========================================
+  # 1. BUILD ANDROID & LINUX (Ubuntu)
+  # ==========================================
+  build-ubuntu:
+    name: Build Android & Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install Linux Build Deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libblkid-dev liblzma-dev libgcrypt20-dev pkg-config
+
+      - name: Generate Platform Folders
+        run: flutter create --project-name=${{ env.APP_NAME }} --platforms=android,linux .
+
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      - name: Build Android APK
+        run: flutter build apk --release --split-per-abi
+
+      - name: Build Linux & Package (Tar + Zip)
+        run: |
+          flutter build linux --release
+          cd build/linux/x64/release/bundle
+          tar -czf ../../../../../${{ env.APP_NAME }}.tar.gz .
+          zip -r ../../../../../${{ env.APP_NAME }}.zip .
+
+      - name: Upload Android
+        run: |
+          APK_FILE=$(find build/app/outputs/flutter-apk -name "*arm64-v8a-release.apk" | head -n 1)
+          if [ -n "$APK_FILE" ] && [ -f "$APK_FILE" ]; then
+            curl -fL -X POST "${SHEEPOD_ENDPOINT}/api/apps/upload" \
+              -F "token=${SHEEPOD_TOKEN}" \
+              -F "channel_key=${SHEEPOD_CHANNEL_KEY_ANDROID}" \
+              -F "file=@$APK_FILE" \
+              -F "release_type=release" \
+              -F "release_version=1.0.0" \
+              -F "build_version=${GITHUB_RUN_NUMBER}" \
+              -F "changelog=Build Android #${GITHUB_RUN_NUMBER}"
+          fi
+
+      - name: Upload Linux (tar.gz)
+        run: |
+          if [ -f "${{ env.APP_NAME }}.tar.gz" ]; then
+            curl -fL -X POST "${SHEEPOD_ENDPOINT}/api/apps/upload" \
+              -F "token=${SHEEPOD_TOKEN}" \
+              -F "channel_key=${SHEEPOD_CHANNEL_KEY_LINUX}" \
+              -F "file=@${{ env.APP_NAME }}.tar.gz" \
+              -F "release_type=release" \
+              -F "release_version=1.0.0" \
+              -F "build_version=${GITHUB_RUN_NUMBER}" \
+              -F "changelog=Build Linux #${GITHUB_RUN_NUMBER}"
+          fi
+
+      - name: Upload Linux Zip to ZIP Channel
+        run: |
+          if [ -f "${{ env.APP_NAME }}.zip" ]; then
+            curl -fL -X POST "${SHEEPOD_ENDPOINT}/api/apps/upload" \
+              -F "token=${SHEEPOD_TOKEN}" \
+              -F "channel_key=${SHEEPOD_CHANNEL_KEY_ZIP}" \
+              -F "file=@${{ env.APP_NAME }}.zip" \
+              -F "release_type=release" \
+              -F "release_version=1.0.0" \
+              -F "build_version=${GITHUB_RUN_NUMBER}" \
+              -F "changelog=Build Linux ZIP #${GITHUB_RUN_NUMBER}"
+          fi
+
+  # ==========================================
+  # 2. BUILD WINDOWS (Windows Server)
+  # ==========================================
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Generate Platform Folders
+        run: flutter create --project-name=${{ env.APP_NAME }} --platforms=windows .
+
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      - name: Build Windows (Native EXE)
+        run: flutter build windows --release
+
+      - name: Upload Windows
+        run: |
+          EXE_FILE="build/windows/x64/runner/Release/${{ env.APP_NAME }}.exe"
+          if [ -f "$EXE_FILE" ]; then
+            curl -fL -X POST "${SHEEPOD_ENDPOINT}/api/apps/upload" \
+              -F "token=${SHEEPOD_TOKEN}" \
+              -F "channel_key=${SHEEPOD_CHANNEL_KEY_WINDOWS}" \
+              -F "file=@$EXE_FILE" \
+              -F "release_type=release" \
+              -F "release_version=1.0.0" \
+              -F "build_version=${GITHUB_RUN_NUMBER}" \
+              -F "changelog=Build Windows #${GITHUB_RUN_NUMBER}"
+          else
+            echo "Error: .exe file not found!" && exit 1
+          fi
+
+  # ==========================================
+  # 3. BUILD iOS (macOS) *Simulates ipa packaging no codesign utizing Zip
+  # ==========================================
+  build-ios:
+    name: Build iOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Generate Platform Folders
+        run: flutter create --project-name=${{ env.APP_NAME }} --platforms=ios .
+
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      - name: Build iOS (No Codesign)
+        run: flutter build ios --release --no-codesign
+
+      - name: Package into Real IPA
+        run: |
+          cd build/ios/iphoneos
+          mkdir Payload
+          mv Runner.app Payload/
+          zip -r ../../../${{ env.APP_NAME }}.ipa Payload
+
+      - name: Upload iOS IPA
+        run: |
+          IPA_FILE="${{ env.APP_NAME }}.ipa"
+          if [ -f "$IPA_FILE" ]; then
+            curl -fL -X POST "${SHEEPOD_ENDPOINT}/api/apps/upload" \
+              -F "token=${SHEEPOD_TOKEN}" \
+              -F "channel_key=${SHEEPOD_CHANNEL_KEY_IOS}" \
+              -F "file=@$IPA_FILE" \
+              -F "release_type=release" \
+              -F "release_version=1.0.0" \
+              -F "build_version=${GITHUB_RUN_NUMBER}" \
+              -F "changelog=Build iOS #${GITHUB_RUN_NUMBER}"
+          else
+            echo "Error: IPA file not found!" && exit 1
+          fi
