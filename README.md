@@ -1,5 +1,5 @@
 # sheepod_test_app
-sheepod_test_app is a CI-CD multi-platform example.
+sheepod_test_app is a CI-CD multi-platform example. 
 
 Create a user (service account) inside yourcompany.sheepod.io and generate a TOKEN.
 
